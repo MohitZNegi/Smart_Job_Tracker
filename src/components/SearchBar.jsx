@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearchQuery, fetchJobs } from '../redux/jobsSlice';
 import './SearchBar.css';
@@ -9,8 +9,20 @@ const SearchBar = () => {
   // useSelector is a hook from react-redux that allows us to extract data from the Redux store state.
   const { searchQuery, status, jobs, error } = useSelector((state) => state.jobs);
 
+  // Debounce network requests so we do not call the API on every key stroke.
+  // This keeps typing responsive and reduces unnecessary API traffic.
+  useEffect(() => {
+    const delayMs = 500;
+    const timerId = setTimeout(() => {
+      dispatch(fetchJobs(searchQuery));
+    }, delayMs);
+
+    // Cleanup prevents stale timers from dispatching old searches.
+    return () => clearTimeout(timerId);
+  }, [dispatch, searchQuery]);
+
   const handleSearch = () => {
-    // We dispatch the fetchJobs async thunk with the current search query.
+    // Manual search still supports explicit submit behavior.
     dispatch(fetchJobs(searchQuery));
   };
 
@@ -25,7 +37,7 @@ const SearchBar = () => {
           onChange={(e) => dispatch(setSearchQuery(e.target.value))}
           placeholder="Search for jobs"
         />
-        {/* The button is disabled when the status is 'loading' to prevent multiple searches at the same time. */}
+        {/* The button is disabled when the status is 'loading' to prevent overlapping requests. */}
         <button onClick={handleSearch} disabled={status === 'loading'}>
           {/* We conditionally render the button text based on the status. */}
           {status === 'loading' ? 'Searching...' : 'Search'}

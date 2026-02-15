@@ -15,8 +15,9 @@ const initialState = {
 export const fetchJobs = createAsyncThunk(
   'jobs/fetchJobs',
   async (query) => {
+    const normalizedQuery = query?.trim() || 'react';
     const response = await axios.get(
-      `https://remotive.com/api/remote-jobs?search=${query}`
+      `https://remotive.com/api/remote-jobs?search=${encodeURIComponent(normalizedQuery)}`
     );
     return response.data.jobs;
   }
