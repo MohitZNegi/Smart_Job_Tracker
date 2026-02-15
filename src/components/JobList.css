@@ -1,5 +1,11 @@
 .job-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.status-text {
+  margin-top: 1rem;
+  color: #3c4858;
 }

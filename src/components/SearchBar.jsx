@@ -39,8 +39,9 @@ const SearchBar = () => {
         />
         {/* The button is disabled when the status is 'loading' to prevent overlapping requests. */}
         <button onClick={handleSearch} disabled={status === 'loading'}>
+          <span aria-hidden="true" className="btn-icon">{'\u2315'}</span>
           {/* We conditionally render the button text based on the status. */}
-          {status === 'loading' ? 'Searching...' : 'Search'}
+          {status === 'loading' ? 'Searching...' : 'Search Jobs'}
         </button>
       </div>
       {/* We conditionally render the number of jobs found when the search is successful. */}
@@ -52,3 +53,4 @@ const SearchBar = () => {
 };
 
 export default SearchBar;
+

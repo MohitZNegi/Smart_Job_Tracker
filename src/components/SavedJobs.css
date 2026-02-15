@@ -1,21 +1,52 @@
 .saved-jobs-container {
-  margin-top: 2rem;
+  margin: 1rem 0;
   padding: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(233, 244, 255, 0.56));
+  box-shadow: 0 14px 30px rgba(34, 47, 68, 0.14);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.saved-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.saved-header h2 {
+  margin: 0;
+}
+
+.toggle-saved-btn {
+  border: 1px solid rgba(89, 111, 150, 0.38);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.75);
+  color: #2f3a4a;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.toggle-saved-btn:hover {
+  background: rgba(255, 255, 255, 0.95);
 }
 
 .saved-jobs-list {
-  list-style-type: none;
+  list-style: none;
   padding: 0;
+  margin: 1rem 0 0;
 }
 
 .saved-job-item {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid #eee;
+  gap: 0.8rem;
+  align-items: flex-start;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid rgba(92, 111, 145, 0.2);
 }
 
 .saved-job-item:last-child {
@@ -24,19 +55,57 @@
 
 .saved-job-item .job-info h3 {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1.02rem;
+  color: #1f2733;
 }
 
 .saved-job-item .job-info p {
-  margin: 0;
-  color: #555;
+  margin: 0.22rem 0 0;
+  color: #4e5a69;
 }
 
-.saved-job-item button {
-  padding: 0.3rem 0.8rem;
-  border: none;
-  background-color: #dc3545;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
+.saved-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.saved-actions a {
+  text-decoration: none;
+  color: #2a67d3;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+  padding: 0.42rem 0.62rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.saved-actions a:hover {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.saved-actions button {
+  border: 1px solid rgba(175, 53, 60, 0.35);
+  background: linear-gradient(145deg, #d44b54, #e36066);
+  color: #fff6f6;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+}
+
+.saved-actions button:hover {
+  box-shadow: 0 7px 14px rgba(122, 31, 38, 0.25);
+}
+
+.empty-text {
+  margin: 0.95rem 0 0;
+  color: #4e5a69;
+}
+
+@media (max-width: 640px) {
+  .saved-job-item {
+    flex-direction: column;
+  }
 }

@@ -8,8 +8,8 @@ const JobList = () => {
   const { jobs, status, error } = useSelector((state) => state.jobs);
 
   // Conditional rendering based on the status of the API call.
-  if (status === 'loading') return <p>Loading...</p>;
-  if (status === 'failed') return <p>Error: {error}</p>;
+  if (status === 'loading') return <p className="status-text">Loading jobs...</p>;
+  if (status === 'failed') return <p className="status-text">Error: {error}</p>;
 
   return (
     <div className="job-list">

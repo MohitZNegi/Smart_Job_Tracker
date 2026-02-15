@@ -1,42 +1,48 @@
-#root {
-  max-width: 1280px;
+.app-shell {
+  min-height: 100vh;
+  padding: 2rem 1rem;
+}
+
+.app-main {
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.app-header,
+.app-footer {
+  max-width: 1100px;
+  margin: 0 auto 1.2rem;
+  padding: 1.3rem 1.4rem;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.app-footer {
+  margin-top: 1.2rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.app-eyebrow {
+  margin: 0;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #5a6474;
+  font-size: 0.78rem;
 }
 
-.card {
-  padding: 2em;
+.app-header h1 {
+  margin: 0.25rem 0 0;
+  font-size: clamp(1.45rem, 2.4vw, 2.2rem);
+  color: #1f2733;
 }
 
-.read-the-docs {
-  color: #888;
+.app-footer p {
+  margin: 0;
+  color: #4e5a69;
+}
+
+.glass-panel {
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(236, 243, 255, 0.5));
+  box-shadow: 0 12px 34px rgba(32, 45, 70, 0.18);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
