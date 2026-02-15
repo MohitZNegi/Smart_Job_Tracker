@@ -1,6 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+// Keep query normalization in one place so cache keys stay consistent.
+const normalizeSearchQuery = (query) => query?.trim().toLowerCase() || 'react';
+
 // The initial state of our 'jobs' slice.
 const initialState = {
   jobs: [],
@@ -8,18 +11,35 @@ const initialState = {
   status: 'idle', // Can be 'idle', 'loading', 'succeeded', or 'failed'
   error: null,
   searchQuery: '',
+  // Basic cache: { [normalizedQuery]: jobs[] }
+  cacheByQuery: {},
 };
 
 // createAsyncThunk is a function from Redux Toolkit that simplifies handling asynchronous actions.
 // We use it here to fetch jobs from the Remotive API.
 export const fetchJobs = createAsyncThunk(
   'jobs/fetchJobs',
-  async (query) => {
-    const normalizedQuery = query?.trim() || 'react';
+  async (query, thunkAPI) => {
+    const normalizedQuery = normalizeSearchQuery(query);
+    const { jobs } = thunkAPI.getState();
+
+    // If the query was already fetched, return cached data instead of refetching.
+    if (jobs.cacheByQuery[normalizedQuery]) {
+      return {
+        jobs: jobs.cacheByQuery[normalizedQuery],
+        query: normalizedQuery,
+        fromCache: true,
+      };
+    }
+
     const response = await axios.get(
       `https://remotive.com/api/remote-jobs?search=${encodeURIComponent(normalizedQuery)}`
     );
-    return response.data.jobs;
+    return {
+      jobs: response.data.jobs,
+      query: normalizedQuery,
+      fromCache: false,
+    };
   }
 );
 
@@ -50,7 +70,17 @@ const jobsSlice = createSlice({
     builder
       // When the fetchJobs thunk is pending (i.e., the API call is in progress),
       // we set the status to 'loading' and clear any previous errors.
-      .addCase(fetchJobs.pending, (state) => {
+      .addCase(fetchJobs.pending, (state, action) => {
+        const normalizedQuery = normalizeSearchQuery(action.meta.arg);
+
+        // If data already exists in cache, hydrate immediately and skip loading flicker.
+        if (state.cacheByQuery[normalizedQuery]) {
+          state.status = 'succeeded';
+          state.error = null;
+          state.jobs = state.cacheByQuery[normalizedQuery];
+          return;
+        }
+
         state.status = 'loading';
         state.error = null;
       })
@@ -58,7 +88,9 @@ const jobsSlice = createSlice({
       // we set the status to 'succeeded' and update the jobs array with the data from the API.
       .addCase(fetchJobs.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.jobs = action.payload;
+        state.jobs = action.payload.jobs;
+        // Cache the latest successful response by normalized query.
+        state.cacheByQuery[action.payload.query] = action.payload.jobs;
       })
       // When the fetchJobs thunk is rejected (i.e., the API call failed),
       // we set the status to 'failed' and store the error message.
