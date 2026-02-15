@@ -13,7 +13,7 @@ export const fetchJobs = createAsyncThunk(
   'jobs/fetchJobs',
   async (query) => {
     const response = await axios.get(
-      `https://remotive.com/api/remote-jobs?search=react=${query}`
+      `https://remotive.com/api/remote-jobs?search=${query}`
     );
     return response.data.jobs;
   }
@@ -31,7 +31,7 @@ const jobsSlice = createSlice({
     },
     removeSavedJob: (state, action) => {
       state.savedJobs = state.savedJobs.filter(
-        (job) => job.id !== action.payload.id
+        (job) => job.id !== action.payload
       );
     },
   },
